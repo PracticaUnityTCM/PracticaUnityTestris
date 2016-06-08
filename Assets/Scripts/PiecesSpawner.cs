@@ -23,7 +23,14 @@ public class PiecesSpawner : MonoBehaviour {
         // si tu 
 		
             var i = Random.Range(0, _pieces.Length);
-			GameObject obj= (GameObject)Instantiate (_pieces[i], transform.position, Quaternion.identity);
+        if (_pieces[i] != null)
+        {
+            GameObject obj = (GameObject)Instantiate(_pieces[i], transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Debug.LogError("Falta Assignar els les peces a larray");
+        }
           ///  obj.GetComponent<PieceMove>().StopPieceIsDown();
             
 

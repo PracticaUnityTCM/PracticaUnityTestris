@@ -3,9 +3,10 @@ using System.Collections;
 
 public class GameHud : MonoBehaviour {
     public GUISkin skin;
+    private Timer _timer;
 	// Use this for initialization
 	void Start () {
-
+                
 	}
 	
 	// Update is called once per frame
@@ -17,46 +18,61 @@ public class GameHud : MonoBehaviour {
         GUI.skin = skin;
        // skin.customStyles.SetValue()
 
-        GUILayout.BeginArea(new Rect(0,0,Screen.width, Screen.height));
+        GUILayout.BeginArea(new Rect(Screen.width/3,0,Screen.width/3, Screen.height/8    ));
         {
-            GUILayout.BeginArea(new Rect(0, 0, Screen.width /2, Screen.height), skin.GetStyle("Box"));
-            {
-                GUILayout.Box("Tetis");
-                //GUILayout.BeginVertical();
-                //{
-                    GUILayout.BeginArea(new Rect(0,0 , Screen.width /2 , Screen.height+900 ), skin.GetStyle("Box2"));
-                    {
-                        //GUILayout.BeginVertical();
-                        //{
-                        //    GUILayout.BeginArea(new Rect(0, 0, Screen.width / 2, Screen.height));
-                        //    {
-                        //        //GUILayout.Button("Tetris", skin.GetStyle("Label"));
-                        //    }
-                        //    GUILayout.EndArea();
-                        //}
-                        //GUILayout.EndVertical();
-                    }
-                    GUILayout.EndArea();
-                    //}
-                    //GUILayout.EndVertical();
-            }
-            GUILayout.EndArea();
-         
-            GUILayout.BeginArea(new Rect(Screen.width / 2, 0, Screen.width , Screen.height));
-            {
-                GUILayout.BeginVertical(skin.GetStyle("Box"));
-                {
-                    GUILayout.BeginHorizontal();
-                    {
-                        GUILayout.Button("Tetris", skin.GetStyle("Label"));
-                    }
-                    GUILayout.EndVertical();
-                }
-                GUILayout.EndVertical();
-            }
-            GUILayout.EndArea();
+            GUILayout.BeginHorizontal();
+            GUILayout.Space(5f);
+
+            GUILayout.Box("Tetis", skin.GetStyle("titleStyle"));
+            GUILayout.Space(50f);
+            GUILayout.EndHorizontal();
         }
         GUILayout.EndArea();
-            
+        GUILayout.BeginArea(new Rect(0,Screen.height/7,Screen.width,Screen.height/2));
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.BeginArea(new Rect(0,0,Screen.width/2,Screen.height ));
+                {
+                    GUILayout.Box("Hola");
+                }
+                GUILayout.EndArea();
+            }
+            GUILayout.EndHorizontal();
+        }
+        GUILayout.EndArea();
+        GUILayout.BeginArea(new Rect(Screen.width/2, Screen.height / 7, Screen.width, Screen.height));
+        {
+            GUILayout.BeginHorizontal();
+            {
+                GUILayout.BeginArea(new Rect(0, 0, Screen.width / 2, Screen.height));
+                {
+                    GUILayout.Box("Hola");
+                }
+                GUILayout.EndArea();
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.Space(50f);
+            GUILayout.BeginVertical();
+            {
+                GUILayout.Box("Hola");
+            }
+            GUILayout.EndVertical();
+        }
+        GUILayout.EndArea();
+        GUI.Box(new Rect(0, 0, 3477, 89),"ff");
+        {
+            GUI.Label(new Rect(0, 0, 56, 78), "jj");    
+        }
+
+    }
+    void OnLevelWasLoaded(int level)
+    {
+        if (level == 1)
+
+            _timer = (Timer)GameObject.FindObjectOfType<Timer>();
+        if (_timer != null)
+            _timer.StartTimer();
+
     }
 }
