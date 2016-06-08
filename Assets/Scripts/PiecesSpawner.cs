@@ -2,39 +2,30 @@
 using System.Collections;
 
 public class PiecesSpawner : MonoBehaviour {
-	private bool bottom;
-    [SerializeField]
-    GameObject _pieceSquare;
-    [SerializeField] GameObject _piece;
+
+
+    public GameObject[] _pieces = new GameObject[7];
 
     // aixo es la refercia al prefab es 1 
-	// Use this for initialization
-	void Start () 
+    // Use this for initialization
+    void Start () 
 	{
-		bottom = true;
+       
+        Create();
+     
 	}
 	
 	// Update is called once per frame
-	void Update () 
-	{
-        //bottom = false;
-        Create(ref bottom);
+	
 
-
-       
-        Debug.Log(bottom);    
-	}
-
-	public void Create(ref bool  bottom)
+	public void Create()
 	{
         // si tu 
-		if (bottom) 
-		{
-			GameObject obj= (GameObject)Instantiate (_piece, transform.position, transform.rotation);
-            obj.GetComponent<PieceMove>().StopPieceIsDown();
+		
+            var i = Random.Range(0, _pieces.Length);
+			GameObject obj= (GameObject)Instantiate (_pieces[i], transform.position, Quaternion.identity);
+          ///  obj.GetComponent<PieceMove>().StopPieceIsDown();
             
-            Debug.Log(bottom);
-        }
-        bottom = false;
+
     }
 }
