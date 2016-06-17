@@ -11,7 +11,7 @@ public class Menu : MonoBehaviour {
 	private State currentState;
 	private enum State
 	{
-		Menu, Difficulty , End
+		Menu, Difficulty ,Playing, End
 	}
 	private  string 
 	textbtn1,
@@ -45,19 +45,31 @@ public class Menu : MonoBehaviour {
 		GUI.color = Color.white;
 		GUILayout.Label ("TETRIS");
 			if (GUI.Button (new Rect (10, 20, m_startButtonSize, 50), textbtn1))
-		{
+		    {
 			
-			if (currentState == State.Difficulty) {
-				SceneManager.LoadScene ("Tetris");
-			} else {
-				currentState = State.Difficulty;
-			}
+			    if (currentState == State.Difficulty) {
+                    GameManager.Instance.IsHardDificulty = true;
+			   	      SceneManager.LoadScene ("Tetris");
+                GameManager.Instance.StartGame();
+            } else {
+				    currentState = State.Difficulty;
+			    }
+		    }
+
+            if (GUI.Button(new Rect(10, 70, m_exitButtonSize, 50), textbtn2))
+            {
+                if (currentState == State.Difficulty)
+                {
+                    GameManager.Instance.IsHardDificulty = false;
+                    SceneManager.LoadScene("Tetris");
+                    GameManager.Instance.StartGame();
+                }
+            }
+            else
+            {
+                Application.Quit();
+            }
 		}
 
-		if (GUI.Button(new Rect(10,70,m_exitButtonSize,50),textbtn2))
-		{
-			Application.Quit ();	
-		}
-
-	}
+	
 }

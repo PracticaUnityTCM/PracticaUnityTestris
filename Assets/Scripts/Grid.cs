@@ -2,13 +2,16 @@
 using System.Collections;
 
 public class Grid : MonoBehaviour {
-	public static int rows = 21;
+	public static int rows = 22;
 	public static int col = 10;
+    // x posicionar el grid en la pantalla 
 	public static Transform [,] grid =new Transform[col,rows];
 
 	// Use this for initialization
 	void Start () 
-	{	
+	{
+        
+        transform.position = new Vector3(Screen.width/2,444,0)    ;
 	}
 	
 	// Update is called once per frame

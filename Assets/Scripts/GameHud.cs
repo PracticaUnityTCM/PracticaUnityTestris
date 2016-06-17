@@ -1,62 +1,37 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameHud : MonoBehaviour {
     public GUISkin skin;
+    public GUISkin skinGame;
+    private GameObject cam;
+    private Timer timer;
+    public GameObject texttimerobj;
+    public Text textTime;
+    public GameObject textScoreObj;
+    public Text textScore;
 	// Use this for initialization
 	void Start () {
-
+        cam = GameObject.Find("Main Camera");
+        timer = cam.GetComponent<Timer>();
+        
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
-    void OnGUI()
-    {
-        GUI.skin = skin;
-       // skin.customStyles.SetValue()
+        cam = GameObject.Find("Main Camera");
+        timer = cam.GetComponent<Timer>();
+        texttimerobj = (GameObject)GameObject.Find("TimeText");
+        textTime = texttimerobj.GetComponent<Text>();
+           textTime.text =timer.TimerText;
+        textScoreObj = (GameObject)GameObject.Find("ScoreText");
+        textScore = textScoreObj.GetComponent<Text>();
+        textScore.text = GameManager.Instance.Points.ToString();
 
-        GUILayout.BeginArea(new Rect(0,0,Screen.width, Screen.height));
-        {
-            GUILayout.BeginArea(new Rect(0, 0, Screen.width /2, Screen.height), skin.GetStyle("Box"));
-            {
-                GUILayout.Box("Tetis");
-                //GUILayout.BeginVertical();
-                //{
-                    GUILayout.BeginArea(new Rect(0,0 , Screen.width /2 , Screen.height+900 ), skin.GetStyle("Box2"));
-                    {
-                        //GUILayout.BeginVertical();
-                        //{
-                        //    GUILayout.BeginArea(new Rect(0, 0, Screen.width / 2, Screen.height));
-                        //    {
-                        //        //GUILayout.Button("Tetris", skin.GetStyle("Label"));
-                        //    }
-                        //    GUILayout.EndArea();
-                        //}
-                        //GUILayout.EndVertical();
-                    }
-                    GUILayout.EndArea();
-                    //}
-                    //GUILayout.EndVertical();
-            }
-            GUILayout.EndArea();
-         
-            GUILayout.BeginArea(new Rect(Screen.width / 2, 0, Screen.width , Screen.height));
-            {
-                GUILayout.BeginVertical(skin.GetStyle("Box"));
-                {
-                    GUILayout.BeginHorizontal();
-                    {
-                        GUILayout.Button("Tetris", skin.GetStyle("Label"));
-                    }
-                    GUILayout.EndVertical();
-                }
-                GUILayout.EndVertical();
-            }
-            GUILayout.EndArea();
-        }
-        GUILayout.EndArea();
-            
+        
+        
     }
+    
 }
