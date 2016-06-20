@@ -1,14 +1,17 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class PieceMove : MonoBehaviour {
-        public float Speed=0f;
-    	float lastFall;
-      public float TimeStop = 1f;
-    private Color[] color = new Color[7];
+    public float Speed=0f;
+   float lastFall;
+   public float TimeStop = 1f;
+    private Color[] color = new Color[8];
     public bool isOnViewMode;
     public Vector2 Velocity;
     private int i;
+    private int numLastFall=0;
+    private float posUltimaPeca;
     // Use this for initialization
       void Start () {
         color[0] = Color.red;
@@ -18,12 +21,25 @@ public class PieceMove : MonoBehaviour {
         color[4] = Color.white;
         color[5] = Color.magenta;
         color[6] = Color.grey;
-     
+        color[7] = Color.black;
+        
+        var ii = Random.Range(0, 3);
+        if (ii == 0)
+        {
+            SetColor(7);
+        }
+        else
+        { i = Random.Range(0,6);
+            SetColor(i);
+        }
+        
+       
     }
-   // 
+  
       // Update is called once per frame
       public void StartMove()
     {
+       
         Speed = 1;
         isOnViewMode = false;
     }
@@ -51,7 +67,7 @@ public class PieceMove : MonoBehaviour {
 			if (isValidGridPos())
 				updateGrid();
 			else
-				transform.position += new Vector3(-Speed, 0, 0);
+				transform.position += new Vector3(-Speed , 0, 0);
 		}
 
 
@@ -72,59 +88,73 @@ public class PieceMove : MonoBehaviour {
 		}        
 		else if (Input.GetKeyDown(KeyCode.DownArrow)) 
 		{
-            // es q el codi que vam copiar no permetia lo del spawn a fora del grid
-            // ho he canviat i ara 
-
-            //  si fas baixar la peca amb el
-
-            if(!isOnViewMode)
-            transform.position += new Vector3(0, -1, 0);
-
-        // si fem q amb down arrow pugui baixaer peta tot 
+            
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
 
-            if (!isOnViewMode)
+            if (!isOnViewMode && GameManager.Instance.IsHardDificulty)
             {
-                if (i == 6)
+                if (!gameObject.GetComponent<SpriteRenderer>().color.Equals(Color.black))
                 {
-                    i = 0;
-                    SetColor(i);
-                }
-                else
-                {
-                    i++;
-                    SetColor(i);
+                    if (i == 6)
+                    {
+                        i = 0;
+                        SetColor(i);
+                    }
+                    else
+                    {
+                        i++;
+                        SetColor(i);
+                    }
                 }
             }
-
+          
         }
         else if (  Time.time - lastFall >= GameManager.Instance.SpeedPices)
         {
             if (!isOnViewMode)
             {
+          
                 transform.position += new Vector3(0, -Speed, 0);
 
 
                 if (isValidGridPos())
                 {
-                   // Debug.Log("VALID POS");
+                    
                     updateGrid();
+                                
+
                 }
                 else
                 {
+                  
+                    float yMesAlta = 0;
+                    foreach (Transform child in transform)
+                    {
 
-                 
-
-                  //  Debug.Log("gg");
-                    Grid.deleteFullRows();
-                    FindObjectOfType<PiecesSpawner>().MoveToStartMoving();
-                    FindObjectOfType<PiecesSpawner>().CreateToView();
+                        if (child.transform.position.y > yMesAlta)
+                            yMesAlta = child.transform.position.y;
+                    }
+                    if (yMesAlta >= 20)
+                    {
+                       GameManager.Instance.currentState = Menu.State.End;
+                      }
+                   
+                    if (!GameManager.Instance.IsHardDificulty)
+                    {
+                        Grid.deleteFullRows();
+                        FindObjectOfType<PiecesSpawner>().MoveToStartMoving();
+                        FindObjectOfType<PiecesSpawner>().CreateToView();
+                    }
+                    else
+                    {
+                        Grid.CheckColorRowsGrid(gameObject.GetComponent<SpriteRenderer>().color);
+                        FindObjectOfType<PiecesSpawner>().Create();
+                    }
+                     
                     
-                
-
-                    enabled = false;
+                        enabled = false;
                 }
                 lastFall = Time.time;
             }
@@ -136,14 +166,14 @@ public class PieceMove : MonoBehaviour {
 	bool isValidGridPos()
 	{        
 		foreach (Transform child in transform)
-		{
+		{ 
            
                 Vector2 v = Grid.roundVec2(child.position);
-
-                if (!Grid.insideBorder(v))
+       
+            if (!Grid.insideBorder(v))
                     return false;
-
-
+             
+          
                 if (Grid.grid[(int)v.x, (int)v.y] != null
                     && Grid.grid[(int)v.x, (int)v.y].parent != transform)
                     return false;
@@ -169,15 +199,13 @@ public class PieceMove : MonoBehaviour {
 		}        
 	}
     public void SetColor(int ii)
-    {
-        i = ii;
-        GetComponent<SpriteRenderer>().color = color[i];
-
+    { 
+        GetComponent<SpriteRenderer>().color = color[ii];
+   
         foreach (SpriteRenderer a in GetComponentsInChildren<SpriteRenderer>())
         {
-            a.material.color = GetComponent<SpriteRenderer>().color;
-
+            a.material.color = color[ii];
         }
     }
-
+    
 }

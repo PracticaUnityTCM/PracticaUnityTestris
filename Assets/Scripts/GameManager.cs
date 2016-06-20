@@ -7,6 +7,9 @@ class GameManager
     public int Points;
     public float SpeedPices=1f;
     public Timer timer;
+    public bool IsStartView=true;
+    public Menu.State currentState;
+    public float posPeca;
     
     public  GameManager()
     {
@@ -21,12 +24,7 @@ class GameManager
     {
         Points = 0;
     }
-    public void StartGame()
-    {
-        GameObject cam = (GameObject)GameObject.Find("Main Camera");
-        Timer timer = cam.GetComponent<Timer>();
-        timer.StartTimer();
-    }
+  
 
 }
 

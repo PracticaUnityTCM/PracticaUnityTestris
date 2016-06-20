@@ -53,7 +53,7 @@ public class Timer : MonoBehaviour {
         {
            
             StopTimer();
-            StartTimer();
+            //StartTimer();
             
         }
         else
@@ -64,20 +64,16 @@ public class Timer : MonoBehaviour {
     }
     public void MinusMinute()
     {
-        if(GameManager.Instance.IsHardDificulty)
-        GameManager.Instance.SpeedPices -= 0.25f;
+        if (GameManager.Instance.IsHardDificulty)
+            GameManager.Instance.SpeedPices -= 0.25f;
+        else
+            GameManager.Instance.SpeedPices -= 0.225f;
+
         Minutes -= 1;
     }
     public void MinusSeconds()
-    {
-      
+    { 
         Seconds -= 1;
-        // a mi n o m'acaba d'agradar aquest sistema de gird xq tu mos 1 unitat cadavegada i el temps es 0.001 o m'entens
-        // tu b vls moddificar la  velocitat en funcio d'un temps 
-        // x podero fer has de fer q les peces es mogui amb posicions 1,2 ,3
-        // la veocitat ve  1 a 0 
-        
-             
     }
     public IEnumerator Wait()
     {
@@ -89,10 +85,8 @@ public class Timer : MonoBehaviour {
     {
         _Seconds = 0;
         _Minutes = 0;
-      //  var _Camera =(GameObject) GameObject.Find("Main Camera");
-  //     _gameHud= _Camera.GetComponent<GameHud>();
-     //   _gameHud.stateStartScene = GameHud.StateStartScene.End;
-        
+   
+        GameManager.Instance.currentState = Menu.State.End;
     }
     public void ResetTimer()
     {
